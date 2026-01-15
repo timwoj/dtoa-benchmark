@@ -21,6 +21,7 @@ add_executable(
   src/dragonbox-test.cc
   src/experimental-test.cc
   src/fmt-test.cc
+  src/modp-test.cc
   # Grisu2 variants are disabled since they don't guarantee correctness.
   #src/milo-test.cc
   src/null-test.cc
@@ -51,6 +52,7 @@ add_executable(
   src/xjb/xjb64.cpp
   src/yy/yy_double.c
   src/zmij/zmij.cc
+  src/modp_numtoa/modp_numtoa.cc
 )
 
 target_compile_options(dtoa-benchmark PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
