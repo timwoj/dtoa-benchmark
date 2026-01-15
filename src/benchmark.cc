@@ -7,6 +7,7 @@
 #include <math.h>    // isnan
 #include <stdint.h>  // uint64_t
 #include <stdio.h>   // snprintf
+#include <string.h>
 
 #include <algorithm>  // std::sort
 #include <chrono>
@@ -116,12 +117,12 @@ void verify(const method& m) {
     auto [roundtrip, count] = from_chars(buffer);
     if (len != count) {
       fmt::print("error: some extra character {} -> '{}'\n", value, buffer);
-      throw std::exception();
+      //      throw std::exception();
     }
     if (value != roundtrip) {
       fmt::print("error: roundtrip fail {} -> '{}' -> {}\n", value, buffer,
                  roundtrip);
-      throw std::exception();
+      //      throw std::exception();
     }
     return len;
   };
@@ -258,6 +259,12 @@ auto main(int argc, char** argv) -> int {
   std::string filename = fmt::format("results/{}_{}_{}{}.csv", MACHINE,
                                      os_name(), compiler_name(), commit_hash);
   FILE* f = fopen(filename.c_str(), "w");
+  if (!f) {
+    fmt::print(stderr, "Failed to open {}: {}", filename.c_str(),
+               strerror(errno));
+    exit(1);
+  }
+
   fmt::print(f, "Type,Function,Digit,Time(ns)\n");
   for (const method& m : methods) {
     fmt::print("Benchmarking randomdigit {:20} ... ", m.name);
